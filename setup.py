@@ -26,7 +26,7 @@ setup(
             'Programming Language :: Python :: 3',
     ],
 
-    modules=['beaker_redis'],
+    py_modules=['beaker_redis'],
 
     entry_points={
         'beaker.backends': [

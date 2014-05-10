@@ -2,7 +2,7 @@ from setuptools import setup
 
 # python setup.py sdist --formats=bztar
 
-version = '0.3'
+version = 'dev'
 description = 'Beaker backend for redis'
 long_description = open('README.rst', 'rb').read().decode('utf8')
 

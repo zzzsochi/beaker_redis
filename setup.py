@@ -1,10 +1,10 @@
 from setuptools import setup
 
-# python setup.py sdist --formats=bztar
-
-version = 'dev'
+version = '1.0.0'
 description = 'Beaker backend for redis'
-long_description = open('README.rst', 'rb').read().decode('utf8')
+
+with open('README.rst') as f:
+    long_description = f.read()
 
 
 setup(
@@ -20,10 +20,10 @@ setup(
     install_requires=['beaker', 'redis'],
 
     classifiers=[
-            'Development Status :: 3 - Alpha',
-            'Intended Audience :: Developers',
-            'Operating System :: OS Independent',
-            'Programming Language :: Python :: 3',
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
     ],
 
     py_modules=['beaker_redis'],

@@ -16,7 +16,7 @@ DEFAULT_TTL = 30 * 24 * 60 * 60  # 30 days
 class RedisBackend(NamespaceManager):
     """ Beaker backend for redis.
 
-    :param str dsn: host:port/db
+    :param str dsn: [password@]host:port/db
         (default: `localhost:6379/0`)
     :param str hkey_prefix: name for redis hkey for store data
         (default: `session`)
@@ -45,15 +45,24 @@ class RedisBackend(NamespaceManager):
         if self.lock_dir:
             verify_directory(self.lock_dir)
 
-        host, port_db = dsn.split(':', 1)
-        port, db_num = (int(i) for i in port_db.split('/', 1))
-
-        self.db = Redis(host=host, port=port, db=db_num)
+        host, port, db_num, password = self._parse_dsn(dsn)
+        self.db = Redis(host=host, port=port, db=db_num, password=password)
 
         self.hkey = hkey = ':'.join((hkey_prefix, self.namespace))
         self.ttl = int(ttl)
 
         log.debug("session setuped: %s", hkey)
+
+    def _parse_dsn(self, dsn):
+        parts = dsn.split('@', 1)
+        if len(parts) > 1:
+            password, hostport = parts
+        else:
+            hostport = parts[0]
+            password = None
+        host, port_db = hostport.split(':', 1)
+        port, db_num = (int(i) for i in port_db.split('/', 1))
+        return host, port, db_num, password
 
     def __contains__(self, key):
         return self.db.hexists(self.hkey, key)
